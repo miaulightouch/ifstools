@@ -17,7 +17,8 @@ def decompress(input):
     decompressed = bytearray()
 
     while True:
-        flag = input.read(1)[0]
+        # wrap in bytes for py2
+        flag = bytes(input.read(1))[0]
         for i in range(8):
             if (flag >> i) & 1 == 1:
                 decompressed.append(input.read(1)[0])
@@ -59,7 +60,7 @@ def match_window(in_data, offset):
 
     return None
 
-def compress(input, progress = True):
+def compress(input, progress = False):
     pbar = tqdm(total = len(input), leave = False, unit = 'b', unit_scale = True,
                 desc = 'Compressing', disable = not progress)
     compressed = bytearray()
